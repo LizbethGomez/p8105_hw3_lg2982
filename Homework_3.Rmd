@@ -1,0 +1,18 @@
+---
+title: "hw3"
+author: "Lizbeth Gomez"
+date: "10/10/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, problem 1 }
+library(p8105.datasets)
+data("instacart")
+
+
+```
+*Dataset description:The dataset contains 1,384,617 observations of 15 variables, where each row in the dataset is a product from an order. There is a single order per user in this dataset, which means that every single row is an item purchased at one point by the user at a given time. This dataset contains variables describing the time of day of item purchase( "order_hour_of_the_day")  *
