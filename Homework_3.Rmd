@@ -13,6 +13,15 @@ knitr::opts_chunk$set(echo = TRUE)
 library(p8105.datasets)
 data("instacart")
 
+#How many aisles are there, and which aisles are the most items ordered from?
+
+
+
+
+#Make a plot that shows the number of items ordered in each aisle, limiting this to aisles with more than 10000 items ordered. Arrange aisles sensibly, and organize your plot so others can read it.
+#Make a table showing the three most popular items in each of the aisles “baking ingredients”, “dog food care”, and “packaged vegetables fruits”. Include the number of times each item is ordered in your table.
+#Make a table showing the mean hour of the day at which Pink Lady Apples and Coffee Ice Cream are ordered on each day of the week; format this table for human readers (i.e. produce a 2 x 7 table).
+
 
 ```
-*Dataset description:The dataset contains 1,384,617 observations of 15 variables, where each row in the dataset is a product from an order. There is a single order per user in this dataset, which means that every single row is an item purchased at one point by the user at a given time. This dataset contains variables describing the time of day of item purchase( "order_hour_of_the_day")  *
+*Dataset description:The dataset contains 1,384,617 observations of 15 variables, where each row in the dataset is a product from an order. There is a single order per user in this dataset, which means that every single row is an item purchased at one point by the user at a given time. This dataset contains variables describing the time of day of item purchase( "order_hour_of_the_day"), the online order identifier for the user ("order_id"), whether this user had purchased the item at a previous time ("reordered"), etc. For instance unser number 34, purchased organic whole milk, bananas, marinara pasta sauce, low fat yogurt and half and half. one thing is for sure, they're not allergic to dairy.*
