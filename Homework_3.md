@@ -127,16 +127,27 @@ instacart %>%
   knitr::kable()
 ```
 
-| order\_dow    |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              average\_order\_hour |
-| :------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| Sun           |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          13.44118 |
-| Mon           |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          11.36000 |
-| Tues          |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          11.70213 |
-| Wed           |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          14.25000 |
-| Thur          |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          11.55172 |
-| Fri           |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          12.78431 |
-| Sat           |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          11.93750 |
-| \*Dataset des | cription:The dataset contains 1,384,617 observations of 15 variables, where each row in the dataset is a product from an order. There is a single order per user in this dataset, which means that every single row is an item purchased at one point by the user at a given time. This dataset contains variables describing the time of day of item purchase( “order\_hour\_of\_the\_day”), the online order identifier for the user (“order\_id”), whether this user had purchased the item at a previous time (“reordered”), etc. Illustrative <example:For> instance unser number 34, purchased organic whole milk, bananas, marinara pasta sauce, low fat yogurt and half and half. one thing is for sure, they’re not allergic to dairy.\* |
+| order\_dow | average\_order\_hour |
+| :--------- | -------------------: |
+| Sun        |             13.44118 |
+| Mon        |             11.36000 |
+| Tues       |             11.70213 |
+| Wed        |             14.25000 |
+| Thur       |             11.55172 |
+| Fri        |             12.78431 |
+| Sat        |             11.93750 |
+
+*Dataset description:The dataset contains 1,384,617 observations of 15
+variables, where each row in the dataset is a product from an order.
+There is a single order per user in this dataset, which means that every
+single row is an item purchased at one point by the user at a given
+time. This dataset contains variables describing the time of day of item
+purchase( “order\_hour\_of\_the\_day”), the online order identifier for
+the user (“order\_id”), whether this user had purchased the item at a
+previous time (“reordered”), etc. Illustrative <example:For> instance
+unser number 34, purchased organic whole milk, bananas, marinara pasta
+sauce, low fat yogurt and half and half. one thing is for sure, they’re
+not allergic to dairy.*
 
 \#Answers: *1: There are 134 aisles in this dataset* *2: Most products
 are purchased from the fresh fruit aisle and the packaged vegetable
@@ -179,48 +190,52 @@ head(brfss_smart2010)
 
 brfss_smart2010%>%
   filter(year ==2002) %>% 
+  separate(county, into = c("state", "county"), sep = " - ") %>% 
+  distinct(state, county) %>% 
   count(state) %>% 
   filter(n >= 7)
 ```
 
-    ## # A tibble: 36 x 2
-    ##    state     n
-    ##    <chr> <int>
-    ##  1 AZ       10
-    ##  2 CO       20
-    ##  3 CT       35
-    ##  4 DE       15
-    ##  5 FL       35
-    ##  6 GA       15
-    ##  7 HI       20
-    ##  8 ID       10
-    ##  9 IL       15
-    ## 10 IN       10
-    ## # … with 26 more rows
+    ## # A tibble: 6 x 2
+    ##   state     n
+    ##   <chr> <int>
+    ## 1 CT        7
+    ## 2 FL        7
+    ## 3 MA        8
+    ## 4 NC        7
+    ## 5 NJ        8
+    ## 6 PA       10
 
 ``` r
 brfss_smart2010%>%
   filter(year ==2010) %>% 
+  separate(county, into = c("state", "county"), sep = " - ") %>% 
+  distinct(state, county) %>% 
   count(state) %>% 
   filter(n >= 7)  
 ```
 
-    ## # A tibble: 45 x 2
+    ## # A tibble: 14 x 2
     ##    state     n
     ##    <chr> <int>
-    ##  1 AL       15
-    ##  2 AR       15
-    ##  3 AZ       15
-    ##  4 CA       60
-    ##  5 CO       35
-    ##  6 CT       25
-    ##  7 DE       15
-    ##  8 FL      205
-    ##  9 GA       20
-    ## 10 HI       20
-    ## # … with 35 more rows
+    ##  1 CA       12
+    ##  2 CO        7
+    ##  3 FL       41
+    ##  4 MA        9
+    ##  5 MD       12
+    ##  6 NC       12
+    ##  7 NE       10
+    ##  8 NJ       19
+    ##  9 NY        9
+    ## 10 OH        8
+    ## 11 PA        7
+    ## 12 SC        7
+    ## 13 TX       16
+    ## 14 WA       10
 
 ``` r
 #Construct a dataset that is limited to Excellent responses, and contains, year, state, and a variable that averages the data_value across locations within a state. Make a “spaghetti” plot of this average value over time within a state (that is, make a plot showing a line for each state across years – the geom_line geometry and group aesthetic will help).
 #Make a two-panel plot showing, for the years 2006, and 2010, distribution of data_value for responses (“Poor” to “Excellent”) among locations in NY State
 ```
+
+\#Answers: *1: in 2006 there were *
