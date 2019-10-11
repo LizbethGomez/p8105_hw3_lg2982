@@ -62,7 +62,8 @@ instacart %>%
 ```
 
 
-#Dataset description:The dataset contains 1,384,617 observations of 15 variables, where each row in the dataset is a product from an order. There is a single order per user in this dataset, which means that every single row is an item purchased at one point by the user at a given time. This dataset contains variables describing the time of day of item purchase( "order_hour_of_the_day"), the online order identifier for the user ("order_id"), whether this user had purchased the item at a previous time ("reordered"), etc. Illustrative example:For instance unser number 34, purchased organic whole milk, bananas, marinara pasta sauce, low fat yogurt and half and half. one thing is for sure, they're not allergic to dairy.
+##Dataset description:
+#The dataset contains 1,384,617 observations of 15 variables, where each row in the dataset is a product from an order. There is a single order per user in this dataset, which means that every single row is an item purchased at one point by the user at a given time. This dataset contains variables describing the time of day of item purchase( "order_hour_of_the_day"), the online order identifier for the user ("order_id"), whether this user had purchased the item at a previous time ("reordered"), etc. Illustrative example:For instance unser number 34, purchased organic whole milk, bananas, marinara pasta sauce, low fat yogurt and half and half. one thing is for sure, they're not allergic to dairy.
 
 #Answers:
 #1: There are 134 aisles in this dataset*
@@ -147,7 +148,40 @@ ggplot(aes(x = year, y = mean_data_value, color = state)) +
   
 ```
 
-#Answers:
+##Answers:
 #1: in 2006 there were 6 states with seven or more locations observed, while in 2010 there were 14 
 #2: see spaghetti plot above
 #3: see plot above
+
+
+```{r}
+
+#This problem uses five weeks of accelerometer data collected on a 63 year-old male with BMI 25, who was admitted to the Advanced Cardiac Care Center of Columbia University Medical Center and diagnosed with congestive heart failure (CHF).
+
+#Load, tidy, and otherwise wrangle the data. Your final dataset should include all originally observed variables and values; have useful variable names; include a weekday vs weekend variable; and encode data with reasonable variable classes. Describe the resulting dataset (e.g. what variables exist, how many observations, etc).
+
+accel = 
+  read.csv("./data/accel_data.csv") %>%
+  janitor::clean_names() %>% 
+  rename(day_number = day_id, day_of_the_week = day) %>% 
+  rename_at(vars(starts_with("activity")), funs(str_replace(., "activity", "minute"))) %>% 
+  mutate(weekday= 
+           if_else (day_of_the_week == "Monday", "weekday",
+           if_else (day_of_the_week == "Tuesday", "weekday", 
+           if_else (day_of_the_week == "Wednesday", "weekday",
+           if_else (day_of_the_week == "Thursday","weekday",  
+           if_else (day_of_the_week == "Friday","weekday",
+           if_else (day_of_the_week == "Saturday","weekend",
+           if_else (day_of_the_week == "Sunday","weekend", NA_character_))))))))
+
+
+#Using your tidied dataset, aggregate accross minutes to create a total activity variable for each day, and create a table showing these totals. Are any trends apparent?
+
+
+  
+# Make a single-panel plot that shows the 24-hour activity time courses for each day and use color to indicate day of the week. Describe in words any patterns or conclusions you can make based on this graph
+
+```
+
+#Description
+##this dataset contains 35 observations with 1444 variables. This data represents almost four years of the patient's daily activity, down to each minute of a 24 hour day for 35 days.
