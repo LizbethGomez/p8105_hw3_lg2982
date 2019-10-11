@@ -60,6 +60,8 @@ instacart %>%
 
 
 ```
+
+
 *Dataset description:The dataset contains 1,384,617 observations of 15 variables, where each row in the dataset is a product from an order. There is a single order per user in this dataset, which means that every single row is an item purchased at one point by the user at a given time. This dataset contains variables describing the time of day of item purchase( "order_hour_of_the_day"), the online order identifier for the user ("order_id"), whether this user had purchased the item at a previous time ("reordered"), etc. Illustrative example:For instance unser number 34, purchased organic whole milk, bananas, marinara pasta sauce, low fat yogurt and half and half. one thing is for sure, they're not allergic to dairy.*
 
 #Answers:
@@ -89,12 +91,16 @@ head(brfss_smart2010)
 
 brfss_smart2010%>%
   filter(year ==2002) %>% 
+  separate(county, into = c("state", "county"), sep = " - ") %>% 
+  distinct(state, county) %>% 
   count(state) %>% 
   filter(n >= 7)
 
 
 brfss_smart2010%>%
   filter(year ==2010) %>% 
+  separate(county, into = c("state", "county"), sep = " - ") %>% 
+  distinct(state, county) %>% 
   count(state) %>% 
   filter(n >= 7)  
   
@@ -106,3 +112,5 @@ brfss_smart2010%>%
   
 ```
 
+#Answers:
+*1: in 2006 there were *
