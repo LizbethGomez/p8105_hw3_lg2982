@@ -137,7 +137,7 @@ instacart %>%
 | Fri        |             12.78431 |
 | Sat        |             11.93750 |
 
-*Dataset description:The dataset contains 1,384,617 observations of 15
+\#Dataset description:The dataset contains 1,384,617 observations of 15
 variables, where each row in the dataset is a product from an order.
 There is a single order per user in this dataset, which means that every
 single row is an item purchased at one point by the user at a given
@@ -147,7 +147,7 @@ the user (“order\_id”), whether this user had purchased the item at a
 previous time (“reordered”), etc. Illustrative <example:For> instance
 unser number 34, purchased organic whole milk, bananas, marinara pasta
 sauce, low fat yogurt and half and half. one thing is for sure, they’re
-not allergic to dairy.*
+not allergic to dairy.
 
 \#Answers: *1: There are 134 aisles in this dataset* *2: Most products
 are purchased from the fresh fruit aisle and the packaged vegetable
