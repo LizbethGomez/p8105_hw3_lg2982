@@ -19,12 +19,22 @@ data("instacart")
 instacart%>%
   count(aisle)
 
-instacart_order = instacart%>%
-  group_by(aisle) %>% 
-  count(product_name) 
+instacart %>%
+  count(aisle, name = "aisle_count") %>% 
+  arrange(desc(aisle_count))
 
 #Make a plot that shows the number of items ordered in each aisle, limiting this to aisles with more than 10000 items ordered. Arrange aisles sensibly, and organize your plot so others can read it.
+
+instacart %>%
+  count(aisle, name = "items_count") %>% 
+  arrange(desc (items_count)) %>% 
+  filter(items_count > 10000) %>% 
+ggplot(aes(x = items_count, y = aisle)) + 
+  geom_point()
+
 #Make a table showing the three most popular items in each of the aisles “baking ingredients”, “dog food care”, and “packaged vegetables fruits”. Include the number of times each item is ordered in your table.
+
+
 
 
 
