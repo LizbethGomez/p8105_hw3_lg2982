@@ -149,10 +149,10 @@ unser number 34, purchased organic whole milk, bananas, marinara pasta
 sauce, low fat yogurt and half and half. one thing is for sure, they’re
 not allergic to dairy.
 
-\#Answers: *1: There are 134 aisles in this dataset* *2: Most products
+\#Answers: \#1: There are 134 aisles in this dataset* \#2: Most products
 are purchased from the fresh fruit aisle and the packaged vegetable
-fruits aisle* *3: see plot above* *4: See table above* *5: See table
-above*
+fruits aisle* \#3: see plot above* \#4: See table above* \#5: See table
+above\*
 
 ``` r
  data("brfss_smart2010")
@@ -234,8 +234,55 @@ brfss_smart2010%>%
     ## 14 WA       10
 
 ``` r
-#Construct a dataset that is limited to Excellent responses, and contains, year, state, and a variable that averages the data_value across locations within a state. Make a “spaghetti” plot of this average value over time within a state (that is, make a plot showing a line for each state across years – the geom_line geometry and group aesthetic will help).
-#Make a two-panel plot showing, for the years 2006, and 2010, distribution of data_value for responses (“Poor” to “Excellent”) among locations in NY State
+#Construct a dataset that is limited to Excellent responses, and contains, year, state, and a variable that averages the data_value across locations within a state. 
+
+excellent_data = 
+  brfss_smart2010%>%
+  filter(response %in% c("Excellent")) %>% 
+  select(response, year, state, data_value) %>% 
+  group_by(state) %>% 
+  mutate (mean_data_value = mean(data_value))
+
+#Make a “spaghetti” plot of this average value over time within a state (that is, make a plot showing a line for each state across years – the geom_line geometry and group aesthetic will help).
+excellent_data%>%
+  group_by (state) %>% 
+ggplot(aes(x = year, y = mean_data_value, color = state)) +
+  geom_point() +
+  geom_line() + 
+  labs (
+    title = "Mean Data Values Over the Years",
+        x = "Year",
+        y = "Mean data values"
+  )
 ```
 
-\#Answers: *1: in 2006 there were *
+    ## Warning: Removed 398 rows containing missing values (geom_point).
+
+    ## Warning: Removed 398 rows containing missing values (geom_path).
+
+![](Homework_3_files/figure-gfm/problem%202-1.png)<!-- -->
+
+``` r
+#Make a two-panel plot showing, for the years 2006, and 2010, distribution of data_value for responses (“Poor” to “Excellent”) among locations in NY State
+ ny_data =
+    brfss_smart2010 %>%
+    filter(state == "NY", year == "2006" | year == "2010") %>%
+    arrange(year) 
+ 
+ ny_data%>% 
+   group_by(county) %>% 
+   ggplot(aes(group = county, x = response, y = data_value, color = county)) + 
+   geom_line() +
+   facet_grid (~year) +
+   labs(title = "Health Responses in New York for 2006 and 2010 by County", 
+       x = "Health Response",
+       y = "Data Value of Health Response") +
+   scale_color_hue(name = "County in NY") +
+   theme(legend.position = "bottom")
+```
+
+![](Homework_3_files/figure-gfm/problem%202-2.png)<!-- -->
+
+\#Answers: \#1: in 2006 there were 6 states with seven or more locations
+observed, while in 2010 there were 14 \#2: see spaghetti plot above \#3:
+see plot above
