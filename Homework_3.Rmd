@@ -14,16 +14,22 @@ library(tidyverse)
 library(p8105.datasets)
 data("instacart")
 
-#How many aisles are there, and which aisles are the most items ordered from?
+#Description:
+nrow(instacart)
+ncol(instacart)
+
+
+#1:How many aisles are there, and which aisles are the most items ordered from?
 
 instacart%>%
   count(aisle)
+ 
 
 instacart %>%
   count(aisle, name = "aisle_count") %>% 
   arrange(desc(aisle_count))
 
-#Make a plot that shows the number of items ordered in each aisle, limiting this to aisles with more than 10000 items ordered. Arrange aisles sensibly, and organize your plot so others can read it.
+#2: Make a plot that shows the number of items ordered in each aisle, limiting this to aisles with more than 10000 items ordered. Arrange aisles sensibly, and organize your plot so others can read it.
 
 instacart %>%
   count(aisle, name = "items_count") %>% 
@@ -32,16 +38,33 @@ instacart %>%
 ggplot(aes(x = items_count, y = aisle)) + 
   geom_point()
 
-#Make a table showing the three most popular items in each of the aisles “baking ingredients”, “dog food care”, and “packaged vegetables fruits”. Include the number of times each item is ordered in your table.
+#3: Make a table showing the three most popular items in each of the aisles “baking ingredients”, “dog food care”, and “packaged vegetables fruits”. Include the number of times each item is ordered in your table.
 
 
+instacart %>% 
+  filter(aisle %in% c( "dog food care", "baking ingredients", "packaged vegetables fruits")) %>% 
+  count(aisle, product_name) %>% 
+  group_by(aisle) %>% 
+  top_n(3) %>% 
+  knitr::kable()
 
 
+#4:Make a table showing the mean hour of the day at which Pink Lady Apples and Coffee Ice Cream are ordered on each day of the week; format this table for human readers (i.e. produce a 2 x 7 table)
 
-#Make a table showing the mean hour of the day at which Pink Lady Apples and Coffee Ice Cream are ordered on each day of the week; format this table for human readers (i.e. produce a 2 x 7 table)
+instacart %>% 
+  filter(product_name %in% c( "Pink Lady Apples", " Coffee Ice Cream")) %>% 
+  group_by(order_dow) %>% 
+  summarise(average_order_hour = mean(order_hour_of_day)) %>% 
+  mutate(order_dow = recode(order_dow, `1` = 'Mon', `2` = 'Tues', `3` = 'Wed', `4` = 'Thur', `5` = 'Fri', `6` = 'Sat', `0` = 'Sun'))%>% 
+  knitr::kable()
+
+
 ```
 *Dataset description:The dataset contains 1,384,617 observations of 15 variables, where each row in the dataset is a product from an order. There is a single order per user in this dataset, which means that every single row is an item purchased at one point by the user at a given time. This dataset contains variables describing the time of day of item purchase( "order_hour_of_the_day"), the online order identifier for the user ("order_id"), whether this user had purchased the item at a previous time ("reordered"), etc. Illustrative example:For instance unser number 34, purchased organic whole milk, bananas, marinara pasta sauce, low fat yogurt and half and half. one thing is for sure, they're not allergic to dairy.*
 
 #Answers:
 *1: There are 134 aisles in this dataset*
 *2: Most products are purchased from the fresh fruit aisle and the packaged vegetable fruits aisle*
+*3: see plot above*
+*4: See table above*
+*5: See table abobe*
