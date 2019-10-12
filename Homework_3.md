@@ -323,12 +323,145 @@ accel =
 
 ``` r
 #Using your tidied dataset, aggregate accross minutes to create a total activity variable for each day, and create a table showing these totals. Are any trends apparent?
+accel_total = accel %>% 
+  mutate(
+    total_activity = select(., minute_1:minute_1440) %>% 
+      rowSums(na.rm = TRUE) %>% 
+      round(digits = 2) 
+  ) 
 
-
-  
-# Make a single-panel plot that shows the 24-hour activity time courses for each day and use color to indicate day of the week. Describe in words any patterns or conclusions you can make based on this graph
+accel_total = accel_total%>% 
+  select(weekday, day_of_the_week, total_activity) %>%  
+  group_by(day_of_the_week) %>% 
+  summarise(average_order_hour = mean(total_activity))
+  knitr::kable(accel_total)
 ```
+
+| day\_of\_the\_week | average\_order\_hour |
+| :----------------- | -------------------: |
+| Friday             |             458342.1 |
+| Monday             |             371739.8 |
+| Saturday           |             273847.4 |
+| Sunday             |             383842.6 |
+| Thursday           |             418230.1 |
+| Tuesday            |             359847.6 |
+| Wednesday          |             425954.4 |
+
+``` r
+head(accel_total)
+```
+
+    ## # A tibble: 6 x 2
+    ##   day_of_the_week average_order_hour
+    ##   <fct>                        <dbl>
+    ## 1 Friday                     458342.
+    ## 2 Monday                     371740.
+    ## 3 Saturday                   273847.
+    ## 4 Sunday                     383843.
+    ## 5 Thursday                   418230.
+    ## 6 Tuesday                    359848.
+
+``` r
+# Make a single-panel plot that shows the 24-hour activity time courses for each day and use color to indicate day of the week. Describe in words any patterns or conclusions you can make based on this graph
+
+
+accel_plot = accel %>% 
+  mutate(
+    "1" = select(., minute_1:minute_60) %>% 
+      rowSums(na.rm = TRUE),
+    "2" = select(., minute_61:minute_120) %>% 
+      rowSums(na.rm = TRUE),
+    "3" = select(., minute_121:minute_180) %>% 
+      rowSums(na.rm = TRUE),
+    "4" = select(., minute_181:minute_240) %>% 
+      rowSums(na.rm = TRUE),
+    "5" = select(., minute_241:minute_300) %>% 
+      rowSums(na.rm = TRUE),
+    "6" = select(., minute_301:minute_360) %>% 
+      rowSums(na.rm = TRUE),
+    "7" = select(., minute_361:minute_420) %>% 
+      rowSums(na.rm = TRUE),
+    "8" = select(., minute_421:minute_480) %>% 
+      rowSums(na.rm = TRUE),
+    "9" = select(., minute_481:minute_540) %>% 
+      rowSums(na.rm = TRUE),
+    "10" = select(., minute_541:minute_600) %>% 
+      rowSums(na.rm = TRUE),
+    "11" = select(., minute_601:minute_660) %>% 
+      rowSums(na.rm = TRUE),
+    "12" = select(., minute_661:minute_720) %>% 
+      rowSums(na.rm = TRUE),
+    "13" = select(., minute_721:minute_780) %>% 
+      rowSums(na.rm = TRUE),
+    "14" = select(., minute_781:minute_840) %>% 
+      rowSums(na.rm = TRUE),
+    "15" = select(., minute_841:minute_900) %>% 
+      rowSums(na.rm = TRUE),
+    "16" = select(., minute_901:minute_960) %>% 
+      rowSums(na.rm = TRUE),
+    "17" = select(., minute_961:minute_1020) %>% 
+      rowSums(na.rm = TRUE),
+    "18" = select(., minute_1021:minute_1080) %>% 
+      rowSums(na.rm = TRUE),
+    "19" = select(., minute_1081:minute_1140) %>% 
+      rowSums(na.rm = TRUE),
+    "20" = select(., minute_1141:minute_1200) %>% 
+      rowSums(na.rm = TRUE),
+    "21" = select(., minute_1201:minute_1260) %>% 
+      rowSums(na.rm = TRUE),
+    "22" = select(., minute_1261:minute_1320) %>% 
+      rowSums(na.rm = TRUE),
+    "23" = select(., minute_1321:minute_1380) %>% 
+      rowSums(na.rm = TRUE),
+    "24" = select(., minute_1381:minute_1440) %>% 
+      rowSums(na.rm = TRUE)
+  )
+accel_plot = accel_plot%>% 
+  subset(select = c(1, 3, 1445:1468)) %>% 
+  arrange(week,day_of_the_week) 
+
+accel_plot = accel_plot%>% 
+  pivot_longer(
+    3:26,
+    names_to = "hour",
+    values_to = "activity"
+  )  %>% 
+  mutate(
+    hour= as.numeric(hour) #change to numeric for later plotting 
+  )
+
+accel_plot %>% 
+  arrange(hour)%>%
+  ggplot(aes(x= hour, y = activity)) + 
+  geom_hex(aes(color = day_of_the_week)) +
+  labs(title = "Daily Activity", 
+       x = "Hour",
+       y = "Activity Value") +
+   scale_color_hue(name = "Day of the week") +
+   theme(legend.position = "bottom")
+```
+
+![](Homework_3_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+
+``` r
+head(accel_plot)
+```
+
+    ## # A tibble: 6 x 4
+    ##    week day_of_the_week  hour activity
+    ##   <int> <fct>           <dbl>    <dbl>
+    ## 1     1 Friday              1    2397.
+    ## 2     1 Friday              2    2215.
+    ## 3     1 Friday              3    1509.
+    ## 4     1 Friday              4    3163.
+    ## 5     1 Friday              5    4598.
+    ## 6     1 Friday              6    7190.
 
 \#Description \#\#this dataset contains 35 observations with 1444
 variables. This data represents almost four years of the patient’s daily
-activity, down to each minute of a 24 hour day for 35 days.
+activity, down to each minute of a 24 hour day for 35 days. \#\#
+stratifying by day of the week shows that weekends are generaly lower in
+terms of activity for the patient. \#\# from the graph we can see that
+this patient is most active during weekdays; the data also shows that as
+expected there is minimal activity duing early hours of the day,
+presumably this is when the patient is sleeping or resting.
