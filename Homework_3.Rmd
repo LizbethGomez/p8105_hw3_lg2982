@@ -176,12 +176,109 @@ accel =
 
 
 #Using your tidied dataset, aggregate accross minutes to create a total activity variable for each day, and create a table showing these totals. Are any trends apparent?
+accel_total = accel %>% 
+  mutate(
+    total_activity = select(., minute_1:minute_1440) %>% 
+      rowSums(na.rm = TRUE) %>% 
+      round(digits = 2) 
+  ) 
+
+accel_total = accel_total%>% 
+  select(weekday, day_of_the_week, total_activity) %>%  
+  group_by(day_of_the_week) %>% 
+  summarise(average_order_hour = mean(total_activity))
+  knitr::kable(accel_total)
 
 
+head(accel_total)
   
 # Make a single-panel plot that shows the 24-hour activity time courses for each day and use color to indicate day of the week. Describe in words any patterns or conclusions you can make based on this graph
+
+
+accel_plot = accel %>% 
+  mutate(
+    "1" = select(., minute_1:minute_60) %>% 
+      rowSums(na.rm = TRUE),
+    "2" = select(., minute_61:minute_120) %>% 
+      rowSums(na.rm = TRUE),
+    "3" = select(., minute_121:minute_180) %>% 
+      rowSums(na.rm = TRUE),
+    "4" = select(., minute_181:minute_240) %>% 
+      rowSums(na.rm = TRUE),
+    "5" = select(., minute_241:minute_300) %>% 
+      rowSums(na.rm = TRUE),
+    "6" = select(., minute_301:minute_360) %>% 
+      rowSums(na.rm = TRUE),
+    "7" = select(., minute_361:minute_420) %>% 
+      rowSums(na.rm = TRUE),
+    "8" = select(., minute_421:minute_480) %>% 
+      rowSums(na.rm = TRUE),
+    "9" = select(., minute_481:minute_540) %>% 
+      rowSums(na.rm = TRUE),
+    "10" = select(., minute_541:minute_600) %>% 
+      rowSums(na.rm = TRUE),
+    "11" = select(., minute_601:minute_660) %>% 
+      rowSums(na.rm = TRUE),
+    "12" = select(., minute_661:minute_720) %>% 
+      rowSums(na.rm = TRUE),
+    "13" = select(., minute_721:minute_780) %>% 
+      rowSums(na.rm = TRUE),
+    "14" = select(., minute_781:minute_840) %>% 
+      rowSums(na.rm = TRUE),
+    "15" = select(., minute_841:minute_900) %>% 
+      rowSums(na.rm = TRUE),
+    "16" = select(., minute_901:minute_960) %>% 
+      rowSums(na.rm = TRUE),
+    "17" = select(., minute_961:minute_1020) %>% 
+      rowSums(na.rm = TRUE),
+    "18" = select(., minute_1021:minute_1080) %>% 
+      rowSums(na.rm = TRUE),
+    "19" = select(., minute_1081:minute_1140) %>% 
+      rowSums(na.rm = TRUE),
+    "20" = select(., minute_1141:minute_1200) %>% 
+      rowSums(na.rm = TRUE),
+    "21" = select(., minute_1201:minute_1260) %>% 
+      rowSums(na.rm = TRUE),
+    "22" = select(., minute_1261:minute_1320) %>% 
+      rowSums(na.rm = TRUE),
+    "23" = select(., minute_1321:minute_1380) %>% 
+      rowSums(na.rm = TRUE),
+    "24" = select(., minute_1381:minute_1440) %>% 
+      rowSums(na.rm = TRUE)
+  )
+
+accel_plot = accel_plot %>%
+  pivot_longer(
+    cols = 1:24,
+    names_to = "hours",
+    values_to = "activity") 
+
+total_accel_data = accel_plot %>% 
+  group_by(week, day_number, day_of_the_week, hours) %>% 
+  summarise(sum_activity=sum(activity)) %>% 
+  arrange(week, day_number, day_of_the_week)
+
+total_accel_data %>% 
+  ggplot(aes(x= hours, y = sum_activity, fill = day_of_the_week)) + 
+  geom_line(aes(color = day_of_the_week)) + 
+  scale_color_viridis(discrete=TRUE) + 
+  theme_bw()
+    
+
+accel_plot %>% 
+  ggplot(aes(x= (minute), y = day_number, fill = day_number)) + 
+  geom_line(aes(color = activity)) +
+  labs(title = "Health Responses in New York for 2006 and 2010 by County", 
+       x = "Health Response",
+       y = "Data Value of Health Response") +
+   scale_color_hue(name = "County in NY") +
+   theme(legend.position = "bottom")
+  
+
+  
 
 ```
 
 #Description
 ##this dataset contains 35 observations with 1444 variables. This data represents almost four years of the patient's daily activity, down to each minute of a 24 hour day for 35 days.
+## stratifying by day of the week shows that weekends are generaly lower in terms of activity for the patient.
