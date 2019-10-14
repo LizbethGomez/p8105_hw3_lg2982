@@ -257,25 +257,25 @@ accel_plot = accel_plot%>%
     values_to = "activity"
   )  %>% 
   mutate(
-    hour= as.numeric(hour) #change to numeric for later plotting 
+    hour= as.numeric(hour) #change to numeric
   )
 
 accel_plot %>% 
-  arrange(hour)%>%
-  ggplot(aes(x= hour, y = activity)) + 
-  geom_hex(aes(color = day_of_the_week)) +
+  group_by(week, day_of_the_week)%>%
+  ggplot(aes(grup = day_of_the_week, x= hour, y = activity)) + 
+  geom_line( aes(color = day_of_the_week)) +
   labs(title = "Daily Activity", 
        x = "Hour",
        y = "Activity Value") +
    scale_color_hue(name = "Day of the week") +
    theme(legend.position = "bottom")
   
-head(accel_plot)
+
   
 
 ```
 
 #Description
-##this dataset contains 35 observations with 1444 variables. This data represents almost four years of the patient's daily activity, down to each minute of a 24 hour day for 35 days.
+## This dataset contains 35 observations with 1444 variables. This data represents almost four years of the patient's daily activity, down to each minute of a 24 hour day for 35 days.
 ## stratifying by day of the week shows that weekends are generaly lower in terms of activity for the patient.
 ## from the graph we can see that this patient is most active during weekdays; the data also shows that as expected there is minimal activity duing early hours of the day, presumably this is when the patient is sleeping or resting. 

@@ -427,13 +427,13 @@ accel_plot = accel_plot%>%
     values_to = "activity"
   )  %>% 
   mutate(
-    hour= as.numeric(hour) #change to numeric for later plotting 
+    hour= as.numeric(hour) #change to numeric
   )
 
 accel_plot %>% 
-  arrange(hour)%>%
-  ggplot(aes(x= hour, y = activity)) + 
-  geom_hex(aes(color = day_of_the_week)) +
+  group_by(week, day_of_the_week)%>%
+  ggplot(aes(grup = day_of_the_week, x= hour, y = activity)) + 
+  geom_line( aes(color = day_of_the_week)) +
   labs(title = "Daily Activity", 
        x = "Hour",
        y = "Activity Value") +
@@ -443,21 +443,7 @@ accel_plot %>%
 
 ![](Homework_3_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
-``` r
-head(accel_plot)
-```
-
-    ## # A tibble: 6 x 4
-    ##    week day_of_the_week  hour activity
-    ##   <int> <fct>           <dbl>    <dbl>
-    ## 1     1 Friday              1    2397.
-    ## 2     1 Friday              2    2215.
-    ## 3     1 Friday              3    1509.
-    ## 4     1 Friday              4    3163.
-    ## 5     1 Friday              5    4598.
-    ## 6     1 Friday              6    7190.
-
-\#Description \#\#this dataset contains 35 observations with 1444
+\#Description \#\# This dataset contains 35 observations with 1444
 variables. This data represents almost four years of the patient’s daily
 activity, down to each minute of a 24 hour day for 35 days. \#\#
 stratifying by day of the week shows that weekends are generaly lower in
